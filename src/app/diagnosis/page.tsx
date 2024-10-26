@@ -47,7 +47,10 @@ export default function Diagnosis() {
       method: "POST", 
       body: JSON.stringify({
         symptoms
-      })
+      }), 
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
 
     if (!resp.ok){
@@ -151,4 +154,22 @@ export default function Diagnosis() {
 //         console.log('Error Message:', error.message);
 //       }
 //     });
+// }
+
+
+// {
+//   "predictions": [
+//     {
+//       "label": "bronchial asthma",
+//       "probability": 0.15282227098941803
+//     },
+//     {
+//       "label": "common cold",
+//       "probability": 0.12318649888038635
+//     },
+//     {
+//       "label": "allergy",
+//       "probability": 0.08960410207509995
+//     }
+//   ]
 // }
