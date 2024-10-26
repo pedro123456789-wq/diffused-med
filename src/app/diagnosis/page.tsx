@@ -14,6 +14,18 @@ import {
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@radix-ui/react-dialog";
+import { DialogHeader } from "@/components/ui/dialog";
+
+interface DiagnosisResult {
+  label: string;
+  probability: number;
+}
 
 export default function Diagnosis() {
   const baseUrl = "http://127.0.0.1:8080/api";
@@ -22,6 +34,7 @@ export default function Diagnosis() {
     "image" | "text" | null
   >(null);
   const [symptoms, setSymptoms] = useState<string>("");
+  const [diagnosis, setDiagnosis] = useState<DiagnosisResult[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

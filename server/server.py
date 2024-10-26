@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from server.translation_model import get_translation
 import aivm_client as aic
 import torch
 
@@ -8,6 +7,32 @@ import torch
 app = Flask(__name__)
 CORS(app)   # Lets Next JS app make requests to the server
 
+
+DIAGNOSIS_CLASSIFIER_MODEL = "DIAGNOSIS_CLASSIFIER"
+ALZHEIRMERS_CLASSIFIER_MODEL = "ALZHEIRMER_IMG_CLASSIFIER"
+
+
+def load_models():
+    """
+    Load the classifier models into the blockchain
+    """
+    
+    print("Loading the models... ")
+    #load tiny bert model
+    try:
+        aic.upload_bert_tiny_model(
+            "./saved-models/diagnosis-classifier.onnx", DIAGNOSIS_CLASSIFIER_MODEL)
+    except Exception:
+        print("Diagnosis text classifier already exists")
+
+    # load LeNet image classifier
+    try:
+        aic.upload_lenet5_model(
+            "./saved-models/alzheimer-image-classifier.pth", ALZHEIRMERS_CLASSIFIER_MODEL)
+    except Exception:
+        print("Alzheimer's image classifier already exists")
+        
+        
 @app.route('/', methods=['GET'])
 def hello():
     return jsonify(message="Hello world!")
@@ -15,7 +40,6 @@ def hello():
 @app.route('/api/dx/send_text', methods=['POST'])
 def dx_text():
     symptoms = request.json.get('symptoms', '')
-    
     labels = [
         "drug reaction",
         "allergy",
@@ -41,10 +65,32 @@ def dx_text():
         "migraine"
     ]
     
-    tokens = aic.tokenize(symptoms,)
-    encrypted_tokens = aic.BertTinyCryptensor(*tokens)
-    result = aic.get_prediction(encrypted_tokens, CLASSIFIER_MODEL)
-    probs = torch.nn.functional.softmax(result[0])
+    #perform secure inference using Nillium's aivm
+    try:
+        tokens = aic.tokenize(symptoms,)
+        encrypted_tokens = aic.BertTinyCryptensor(*tokens)
+        result = aic.get_prediction(encrypted_tokens, DIAGNOSIS_CLASSIFIER_MODEL)
+        probs = torch.nn.functional.softmax(result[0])
+    except Exception:
+        print("Error performing inference with AIVM")
+        return jsonify({
+            "message": "Error performing inference with AIVM"
+        }), 400
+    
+    #pair each label with its probability
+    label_probs = list(zip(labels, probs.tolist()))
+    
+    #sort by probability in descending order and get the top 3
+    top_3 = sorted(label_probs, key=lambda x: x[1], reverse=True)[:3]
+    
+    #format the response as a JSON object
+    response = {
+        "predictions": [
+            {"label": label, "probability": prob} for label, prob in top_3
+        ]
+    }
+    
+    return jsonify(response), 200
     
     
     
@@ -77,4 +123,5 @@ def translation():
     return jsonify({"translated_text" : translated_text})
 
 if __name__ == '__main__':
+    load_models()
     app.run(debug=True, port=8080)
