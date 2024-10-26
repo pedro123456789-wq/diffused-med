@@ -26,13 +26,8 @@ git clone https://github.com/pedro123456789-wq/nillion-med-web-app.git
 cd nillion-med-web-app
 ```
 
-### 2. Run the nillion aivm 
-```bash
-aivm-devnet
-```
-
-### 3. Frontend Setup (Next.js)
-Install dependencies, and start the Next.js development server.
+### 2. Frontend Setup (Next.js)
+Run the following to install dependencies, and start the Next.js development server.
 
 ```bash
 npm install
@@ -40,18 +35,23 @@ npm run dev
 ```
 
 The Next.js app will be running on `http://localhost:3000`.
-### 4. Backend Setup (Flask)
-Navigate to the `server` directory, create a virtual environment, install dependencies, and start the Flask server.
+### 3. Backend Setup (Flask)
+Open a _second terminal_ and navigate to the `server` directory. Run the following to create a virtual environment, install dependencies, and start the Flask server.
 
 ```bash
 cd server
 python3 -m venv .venv
 source .venv/bin/activate 
 pip install -r requirements.txt
+aivm-devnet
 python server.py
 ```
 The Flask app will be running on `http://localhost:8080`.
+### 4. Launch the Web App
+Open a browser and visit `http://localhost:3000`. You will see the following landing page. <br><br>
+<img src="readme_img/landing_page.png" alt="landing page" width="1000"/>
 
+## Automatic Diagnosis
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
