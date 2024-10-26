@@ -6,8 +6,13 @@ import Header from '@/components/ui/Header'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
+import axios from 'axios'
 
 export default function Diagnosis() {
+  const baseUrl = "http://127.0.0.1:8080/api"
+
+  const [diagnosisMethod, setDiagnosisMethod] = useState<'image' | 'text' | null>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [symptoms, setSymptoms] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -15,6 +20,40 @@ export default function Diagnosis() {
     // Here you would typically send the symptoms to your backend
     console.log('Symptoms submitted:', symptoms)
     // For now, we'll just log the symptoms
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0])
+      setDiagnosisMethod('image')
+    }
+  }
+
+  const handleTextEntry = () => {
+    setDiagnosisMethod('text')
+    setSelectedImage(null)
+  }
+
+  const handleSubmit = () => {
+    if (diagnosisMethod === 'image' && selectedImage) {
+      console.log('Diagnosing based on image:', selectedImage.name)
+    } else if (diagnosisMethod === 'text' && symptoms) {
+      axios.post(`${baseUrl}/dx/send_text`, { symptoms })
+          .then(response => {
+            // Handle success
+            console.log('Response:', response.data);
+          })
+          .catch(error => {
+            // Handle error
+            if (error.response) {
+              console.log('Error Response:', error.response.data);
+              console.log('Error Status:', error.response.status);
+            } else if (error.request) {
+              console.log('Error Request:', error.request);
+            } else {
+              console.log('Error Message:', error.message);
+            }
+          });
+      console.log('Diagnosing based on symptoms:', symptoms)
+    }
   }
 
   return (
@@ -55,4 +94,5 @@ export default function Diagnosis() {
       </main>
     </div>
   )
+}
 }
