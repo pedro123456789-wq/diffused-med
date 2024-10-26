@@ -15,11 +15,6 @@ export default function Diagnosis() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [symptoms, setSymptoms] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the symptoms to your backend
-    console.log('Symptoms submitted:', symptoms)
-    // For now, we'll just log the symptoms
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedImage(e.target.files[0])
@@ -32,7 +27,9 @@ export default function Diagnosis() {
     setSelectedImage(null)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
     if (diagnosisMethod === 'image' && selectedImage) {
       console.log('Diagnosing based on image:', selectedImage.name)
       const formData = new FormData()
@@ -59,21 +56,21 @@ export default function Diagnosis() {
         });
     } else if (diagnosisMethod === 'text' && symptoms) {
       axios.post(`${baseUrl}/dx/send_text`, { symptoms })
-          .then(response => {
-            // Handle success
-            console.log('Response:', response.data);
-          })
-          .catch(error => {
-            // Handle error
-            if (error.response) {
-              console.log('Error Response:', error.response.data);
-              console.log('Error Status:', error.response.status);
-            } else if (error.request) {
-              console.log('Error Request:', error.request);
-            } else {
-              console.log('Error Message:', error.message);
-            }
-          });
+        .then(response => {
+          // Handle success
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          // Handle error
+          if (error.response) {
+            console.log('Error Response:', error.response.data);
+            console.log('Error Status:', error.response.status);
+          } else if (error.request) {
+            console.log('Error Request:', error.request);
+          } else {
+            console.log('Error Message:', error.message);
+          }
+        });
       console.log('Diagnosing based on symptoms:', symptoms)
     }
   }
@@ -116,5 +113,4 @@ export default function Diagnosis() {
       </main>
     </div>
   )
-}
 }
