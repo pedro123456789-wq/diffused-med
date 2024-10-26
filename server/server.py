@@ -1,12 +1,15 @@
+import os
+import torch
+import aivm_client as aic
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import aivm_client as aic
-import torch
+from PIL import Image
 
 #app instance
 app = Flask(__name__)
 CORS(app)   # Lets Next JS app make requests to the server
-
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
 DIAGNOSIS_CLASSIFIER_MODEL = "DIAGNOSIS_CLASSIFIER"
 ALZHEIRMERS_CLASSIFIER_MODEL = "ALZHEIRMER_IMG_CLASSIFIER"
@@ -101,18 +104,30 @@ def dx_picture():
 
     if image:
         message = f"Image '{image.filename}' received and processed successfully."
+        # Delete files in uploads.
+        '''
+        uploaded_images = os.listdir(app.config['UPLOAD-FOLDER'])
+        for img in uploaded_images:
+            os.remove(app.config['UPLOAD-FOLDER'])
+        '''
 
         # Send a response
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+        image.save(image_path)
+        with Image.open(image_path) as test_image:
+            pass
+        
+        # get dx based on image -> add code here.
+        os.remove(image_path)
         return jsonify({
             "message": f"Image '{image}' received successfully.",
         }), 200
+        
 
-        return jsonify({"message": message}), 200
     else:
         # Return an error if no image was uploaded
         return jsonify({"error": "No image provided"}), 400
 
-    return jsonify(message=f"Received image: {img}")
 
 @app.route('/api/translation')
 def translation():
