@@ -21,7 +21,7 @@ export default function Home() {
               <p>Our advanced AI can translate complex medical terminology across multiple languages, ensuring accurate communication in healthcare settings.</p>
             </CardContent>
             <CardFooter>
-              <Button asChild className="w-full">
+              <Button asChild variant="secondary" className="w-full">
                 <Link href="/translation">
                   Start Translation
                 </Link>
@@ -37,7 +37,7 @@ export default function Home() {
               <p>Describe your symptoms to receive an AI-powered preliminary diagnosis. Our system analyzes your input to provide insights. Always consult with a healthcare professional for definitive medical advice.</p>
             </CardContent>
             <CardFooter>
-              <Button asChild variant="secondary" className="w-full">
+              <Button asChild className="w-full">
                 <Link href="/diagnosis">
                   Start Diagnosis
                 </Link>
