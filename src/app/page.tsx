@@ -11,12 +11,12 @@ export default function Home() {
         <p className="text-xl mb-8 text-center">Choose an option:</p>
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <Button asChild>
-            <Link href="/photo-diagnosis" className="w-full sm:w-auto">
+            <Link href="/translation" className="w-full sm:w-auto">
               Translation
             </Link>
           </Button>
           <Button asChild variant="secondary">
-            <Link href="/text-translation" className="w-full sm:w-auto">
+            <Link href="/diagnosis" className="w-full sm:w-auto">
               Diagnosis
             </Link>
           </Button>
