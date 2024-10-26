@@ -13,14 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@radix-ui/react-dialog";
-import { DialogHeader } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 interface DiagnosisResult {
   label: string;
@@ -35,29 +28,65 @@ export default function Diagnosis() {
   >(null);
   const [symptoms, setSymptoms] = useState<string>("");
   const [diagnosis, setDiagnosis] = useState<DiagnosisResult[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const resp = await axios
-      .post(`${baseUrl}/dx/send_text`, { symptoms })
-      .then((response) => {
-        // Handle success
-        console.log("Response:", response.data);
-      })
-      .catch((error) => {
-        // Handle error
-        if (error.response) {
-          console.log("Error Response:", error.response.data);
-          console.log("Error Status:", error.response.status);
-        } else if (error.request) {
-          console.log("Error Request:", error.request);
-        } else {
-          console.log("Error Message:", error.message);
-        }
+    if (symptoms.length === 0){
+      toast({
+        title: "Invalid input", 
+        description: "Fill in the text field", 
+        variant: "destructive"
       });
-    console.log("Diagnosing based on symptoms:", symptoms);
+      return;
+    }
+
+    setIsLoading(true);
+
+    const resp = await fetch(`${baseUrl}/dx/send_text`, {
+      method: "POST", 
+      body: JSON.stringify({
+        symptoms
+      }), 
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    if (!resp.ok){
+      setIsLoading(false);
+      toast({
+        title: "Error", 
+        description: "Servor error getting diagnosis", 
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const json = await resp.json();
+      setDiagnosis(json.predictions);
+      console.log(json.predictions);
+      setIsLoading(false);
+    } catch (error){
+      console.error(error);
+      toast({
+        title: "Error", 
+        description: "Error getting diagnosis", 
+        variant: "destructive"
+      });
+    }
+
+    setIsLoading(false);
   };
+
+  if (isLoading){
+    return (
+      <div className="h-screen flex flex-col items-center justify-center">
+        <span className="loading loading-ring loading-lg"></span>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -125,4 +154,22 @@ export default function Diagnosis() {
 //         console.log('Error Message:', error.message);
 //       }
 //     });
+// }
+
+
+// {
+//   "predictions": [
+//     {
+//       "label": "bronchial asthma",
+//       "probability": 0.15282227098941803
+//     },
+//     {
+//       "label": "common cold",
+//       "probability": 0.12318649888038635
+//     },
+//     {
+//       "label": "allergy",
+//       "probability": 0.08960410207509995
+//     }
+//   ]
 // }
