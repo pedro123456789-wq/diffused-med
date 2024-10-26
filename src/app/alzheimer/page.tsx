@@ -33,9 +33,6 @@ export default function AlzheimersMRI() {
     const resp = await fetch(`${baseUrl}/dx/send_picture`, 
       {
         method: "POST", 
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }, 
         body: formData
       });
     
