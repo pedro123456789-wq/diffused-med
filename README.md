@@ -4,7 +4,7 @@ This web application utilizes **Nillion Decentralized AI** to provide medical im
 ## Features
 - **Automatic Diagnosis**: Given a description of the symptoms, we generate the 3 most likely diagnosis using Nillion's secure TinyBert model. 
 - **Alzheimer's identification**: Given a brain MRI scan, we generate a description of the stage of Alzheimer's that the brain is in, using LeNet5. 
-- **Translation**: Generic translation of text to allow doctors to understand patients from different countries
+- **Translation (TBD)**: Generic translation of text to allow doctors to understand patients from different countries
 
 ## Technology Stack
 - **Frontend**: Next.js
