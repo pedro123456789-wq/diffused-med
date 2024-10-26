@@ -35,8 +35,8 @@ npm run dev
 ```
 
 The Next.js app will be running on `http://localhost:3000`.
-### 3. Backend Setup (Flask)
-Open a _second terminal_ and navigate to the `server` directory. Run the following to create a virtual environment, install dependencies, and start the Flask server.
+### 3. Backend Setup (AIVM)
+Open a _second terminal_ and run the following to create a virtual environment, install dependencies, and start the Flask server.
 
 ```bash
 cd server
@@ -46,13 +46,35 @@ pip install -r requirements.txt
 aivm-devnet
 python server.py
 ```
+
+### 4. Backend Setup (Flask)
+Open a _third terminal_ and run the following to start the Flask server.
+```bash
+cd server
+source .venv/bin/activate 
+python server.py
+```
 The Flask app will be running on `http://localhost:8080`.
-### 4. Launch the Web App
+
+### 5. Launch the Web App
 Open a browser and visit `http://localhost:3000`. You will see the following landing page. <br><br>
 <img src="readme_img/landing_page.png" alt="landing page" width="1000"/>
 
 ## Automatic Diagnosis
+### 1. Navigate to the Diagnosis Page
+Click the "Start Diagnosis" button and you'll see the following page.<br><br>
+<img src="readme_img/symptoms_page.png" alt="symptoms page" width="1000"/>
 
+### 2. Describe Symptoms
+Write about the symptoms you or your patient has been experiencing and click the submit button.
+
+### 3. Get likely Diagnosis
+You'll see the three most likely diagnoses based on the symptoms.
+
+## Alzheimer's MRI Analysis
+### 1. Navigate to the MRI Analysis Page
+Click the "Analyze MRI" button and you'll see the following page.<br><br>
+<img src="readme_img/mri_page.png" alt="mri page" width="1000"/>
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
