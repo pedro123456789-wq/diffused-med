@@ -14,7 +14,7 @@ def hello():
 def diagnosis():
     return
 
-@app.route('/api/translation')
+@app.route('/api/translation', methods = ['POST'])
 def translation():
     data = request.json
     input_text = data.get('input_text', '') # defaults to empty string is input_text unavailable
