@@ -42,6 +42,10 @@ export default function AlzheimersMRI() {
         if (!resp.ok){
           console.error("Error analysing image: " + json.message);
         }
+
+        setResult(json.prediction);
+        setIsLoading(false);
+
       } catch (err) {
         console.error(err);
       }
@@ -51,7 +55,7 @@ export default function AlzheimersMRI() {
 
   if (isLoading){
     return (
-      <div className='flex flex-col items-center justify-center'>
+      <div className='h-screen flex flex-col items-center justify-center'>
         <span className="loading loading-ring loading-lg"></span>
       </div>
     )
@@ -99,13 +103,29 @@ export default function AlzheimersMRI() {
               onClick={handleAnalyze}
               disabled={!file || isLoading}
               className="w-full mb-4"
+              variant="default"
             >
+              Analyze
             </Button>
-            {result && (
-              <p className="text-center text-sm text-gray-600">{result}</p>
-            )}
           </CardFooter>
         </Card>
+
+        {result && result.length > 0 && (
+              <Card className="w-full max-w-md mb-6">
+                <CardHeader>
+                  <CardTitle>Model Analysis</CardTitle>
+                  <CardDescription>
+                  Model interpretation of MRI scan
+                  {/* This is not a definitive diagnosis and should be discussed with a healthcare professional. */}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    <b>Model Prediction: </b> {result}
+                  </ul>
+                </CardContent>
+              </Card>
+          )}
         <Link href="/" className="mt-8">
           <Button variant="outline">Back to Home</Button>
         </Link>
