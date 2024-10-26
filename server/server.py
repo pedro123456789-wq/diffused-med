@@ -135,6 +135,8 @@ def dx_picture():
                 return jsonify({
                     "message": "Error getting model prediction"
                 })
+
+            os.remove(image_path)
             
             # return string 
             return jsonify({
