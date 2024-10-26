@@ -66,15 +66,27 @@ Click the "Start Diagnosis" button and you'll see the following page.<br><br>
 <img src="readme_img/symptoms_page.png" alt="symptoms page" width="1000"/>
 
 ### 2. Describe Symptoms
-Write about the symptoms you or your patient has been experiencing and click the submit button.
+Write about the symptoms you or your patient has been experiencing and click the submit button.<br><br>
+<img src="readme_img/symptoms_describe.png" width="1000"/>
 
-### 3. Get likely Diagnosis
-You'll see the three most likely diagnoses based on the symptoms.
+### 3. Get Likely Diagnosis
+You'll see the three most likely diagnoses based on the symptoms.<br><br>
+<img src="readme_img/symptoms_get_dx.png" alt="symptoms page" width="1000"/>
 
 ## Alzheimer's MRI Analysis
+
 ### 1. Navigate to the MRI Analysis Page
 Click the "Analyze MRI" button and you'll see the following page.<br><br>
 <img src="readme_img/mri_page.png" alt="mri page" width="1000"/>
+
+### 2. Upload MRI Scan
+Upload an MRI image of a brain. There are sample images in `server/uploads`. <br><br>
+<img src="readme_img/mri_upload_img.png" width="1000"/>
+
+### 3. Get the Stage of Dementia
+You'll see the stage of Alzheimer's the brain is likely to be in. There are five possible outputs.<br><br>
+<img src="readme_img/mri_analysis.png" width ="1000"/>
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
