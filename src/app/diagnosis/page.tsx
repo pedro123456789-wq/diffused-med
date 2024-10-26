@@ -38,14 +38,14 @@ export default function Diagnosis() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Diagnosis</h2>
-        <p className="text-xl mb-8 text-center">Please upload an Image or enter text...</p>
+        <h2 className="text-2xl font-semibold mb-6 text-center cursor-default">Diagnosis</h2>
+        <p className="text-xl mb-8 text-center cursor-default">Please upload an Image or enter text...</p>
         <div className="w-full max-w-md space-y-4 mb-8">
           <div className="flex justify-center items-center space-x-4">
             <Button onClick={() => fileInputRef.current?.click()}>
               Upload Image
             </Button>
-            <span className="text-muted-foreground">or</span>
+            <span className="text-muted-foreground cursor-default">or</span>
             <Button onClick={handleTextEntry} variant="outline">
               Enter Text
             </Button>

@@ -8,8 +8,8 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Welcome to Nillion Medical</h2>
-        <p className="text-xl mb-8 text-center">Choose an option:</p>
+        <h2 className="text-2xl font-semibold mb-6 text-center cursor-default">Welcome to Nillion Medical</h2>
+        <p className="text-xl mb-8 text-center cursor-default">Choose an option:</p>
         <div className="grid gap-6 md:grid-cols-2 w-full max-w-4xl">
           <Card className="flex flex-col">
             <CardHeader>
@@ -44,7 +44,12 @@ export default function Home() {
             </CardFooter>
           </Card>
         </div>
-        <Link href="https://nillion.com/" className="text-blue-500 hover:underline mt-8" target="_blank" rel="noopener noreferrer">
+        <Link 
+          href="https://nillion.com/" 
+          className="text-blue-500 hover:underline mt-8" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
           Learn more about Nillion
         </Link>
       </main>

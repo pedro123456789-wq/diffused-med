@@ -36,8 +36,8 @@ export default function Translation() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Translation Service</h2>
-        <p className="text-xl mb-8 text-center">Please type what you want translated</p>
+        <h2 className="text-2xl font-semibold mb-6 text-center cursor-default">Translation Service</h2>
+        <p className="text-xl mb-8 text-center cursor-default">Please type what you want translated</p>
         <div className="w-full max-w-md space-y-4 mb-8">
           <Textarea 
             placeholder="Enter text here..." 
@@ -45,7 +45,7 @@ export default function Translation() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
           />
-          <p className="text-xl mb-8 text-center">Select the Language</p>
+          <p className="text-xl mb-8 text-center cursor-default">Select the Language</p>
           <Select onValueChange={setTargetLanguage}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select target language" />
