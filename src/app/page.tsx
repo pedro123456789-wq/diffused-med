@@ -9,7 +9,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Welcome to Nillion Medical</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center">Welcome to Diffused-Med</h2>
         <p className="text-xl mb-8 text-center">Choose an option:</p>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl">
           <Card className="flex flex-col">

@@ -7,7 +7,7 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <Link href="/" className="inline-block">
           <h1 className="text-3xl font-bold text-primary hover:text-primary/90 transition-colors">
-            Nillion Medical
+            Diffused-Med
           </h1>
         </Link>
         <Separator className="mt-2" />
