@@ -1,98 +1,57 @@
-'use client'
-
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import Link from 'next/link'
 import Header from '@/components/ui/Header'
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 
 export default function Home() {
-  const [inputString, setInputString] = useState('')
-  const [submittedString, setSubmittedString] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [response, setResponse] = useState<string | null>(null)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError(null)
-    setResponse(null)
-
-    try {
-      console.log('Sending request with:', inputString)
-
-      const res = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: inputString }),
-      })
-
-      const data = await res.json()
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit the string')
-      }
-
-      setResponse(data.result)
-      setSubmittedString(inputString)
-      setInputString('')
-    } catch (err) {
-      console.error('Error in handleSubmit:', err)
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>String Submission</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="text"
-                value={inputString}
-                onChange={(e) => setInputString(e.target.value)}
-                placeholder="Enter a string"
-                aria-label="Enter a string"
-                disabled={isLoading}
-              />
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Submitting...' : 'Submit'}
+      <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
+        <h2 className="text-2xl font-semibold mb-6 text-center cursor-default">Welcome to Nillion Medical</h2>
+        <p className="text-xl mb-8 text-center cursor-default">Choose an option:</p>
+        <div className="grid gap-6 md:grid-cols-2 w-full max-w-4xl">
+          <Card className="flex flex-col">
+            <CardHeader>
+              <CardTitle>Translation</CardTitle>
+              <CardDescription>Translate medical terms and phrases</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <p>Our advanced AI can translate complex medical terminology across multiple languages, ensuring accurate communication in healthcare settings.</p>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full">
+                <Link href="/translation">
+                  Start Translation
+                </Link>
               </Button>
-            </form>
-          </CardContent>
-          {error && (
-            <CardFooter>
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
             </CardFooter>
-          )}
-          {response && (
+          </Card>
+          <Card className="flex flex-col">
+            <CardHeader>
+              <CardTitle>Diagnosis</CardTitle>
+              <CardDescription>Get AI-assisted medical diagnosis</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <p>Upload an image or describe symptoms to receive an AI-powered preliminary diagnosis. Always consult with a healthcare professional for definitive medical advice.</p>
+            </CardContent>
             <CardFooter>
-              <p className="text-lg">
-                Response: <span className="font-semibold">{response}</span>
-              </p>
+              <Button asChild variant="secondary" className="w-full">
+                <Link href="/diagnosis">
+                  Start Diagnosis
+                </Link>
+              </Button>
             </CardFooter>
-          )}
-          {submittedString && (
-            <CardFooter>
-              <p className="text-lg">
-                You submitted: <span className="font-semibold">{submittedString}</span>
-              </p>
-            </CardFooter>
-          )}
-        </Card>
+          </Card>
+        </div>
+        <Link 
+          href="https://nillion.com/" 
+          className="text-blue-500 hover:underline mt-8" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          Learn more about Nillion
+        </Link>
       </main>
     </div>
   )
