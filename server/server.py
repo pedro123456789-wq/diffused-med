@@ -1,12 +1,17 @@
+import os
+import torch
+from torchvision import transforms
+import aivm_client as aic
+import numpy as np
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import aivm_client as aic
-import torch
+from PIL import Image
 
 #app instance
 app = Flask(__name__)
 CORS(app)   # Lets Next JS app make requests to the server
-
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
 DIAGNOSIS_CLASSIFIER_MODEL = "DIAGNOSIS_CLASSIFIER"
 ALZHEIRMERS_CLASSIFIER_MODEL = "ALZHEIRMER_IMG_CLASSIFIER"
@@ -100,19 +105,45 @@ def dx_picture():
     image = request.files.get('image')
 
     if image:
-        message = f"Image '{image.filename}' received and processed successfully."
+        image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+        image.save(image_path)
+        with Image.open(image_path) as image:
+            try:
+                labels = [
+                        "Mild demented",
+                        "Moderate demented",
+                        "Non demented",
+                        "Very mild demented"
+                ]
 
-        # Send a response
-        return jsonify({
-            "message": f"Image '{image}' received successfully.",
-        }), 200
+                # pytorch transformation to make image ready for model
+                transform = transforms.Compose([
+                    transforms.ToPILImage(),
+                    transforms.Resize((28, 28)),  # Resize to 28x28
+                    transforms.Grayscale(num_output_channels=1),  # Convert to grayscale
+                    transforms.ToTensor(),  # Convert image to Tensor
+                    transforms.Normalize((0.5,), (1.0,))
+                ])
+                img_tensor = transform(np.array(image))
 
-        return jsonify({"message": message}), 200
+                # encrypt image tensor
+                encrypted_input = aic.LeNet5Cryptensor(img_tensor.reshape(1, 1, 28, 28))
+                label_cls = torch.argmax(aic.get_prediction(encrypted_input, ALZHEIRMERS_CLASSIFIER_MODEL)[0])
+            except Exception as e:
+                print(e)
+                return jsonify({
+                    "message": "Error getting model prediction"
+                })
+            
+            # return string 
+            return jsonify({
+                "prediction": labels[label_cls]
+            }), 200
     else:
-        # Return an error if no image was uploaded
-        return jsonify({"error": "No image provided"}), 400
+        return jsonify({
+            "message": "Error getting model prediction"
+        }), 400
 
-    return jsonify(message=f"Received image: {img}")
 
 @app.route('/api/translation')
 def translation():
