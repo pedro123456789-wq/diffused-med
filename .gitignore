@@ -38,3 +38,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+model/env
+
+model/classifier-model
+model/classifier-tokenizer
+model/llm-model
+model/llm-tokenizer
