@@ -6,11 +6,11 @@ app = Flask(__name__)
 def hello():
     return jsonify(message="Hello world!")
 
-@app.route('/diagnosis')
+@app.route('/api/dx')
 def diagnosis():
     return
 
-@app.route('/translator')
+@app.route('/api/translation')
 def translation():
     return
 
