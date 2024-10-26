@@ -1,80 +1,55 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
 import Header from '@/components/ui/Header'
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
-import Link from 'next/link'
 
 export default function Diagnosis() {
-  const [diagnosisMethod, setDiagnosisMethod] = useState<'image' | 'text' | null>(null)
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [symptoms, setSymptoms] = useState('')
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedImage(e.target.files[0])
-      setDiagnosisMethod('image')
-    }
-  }
-
-  const handleTextEntry = () => {
-    setDiagnosisMethod('text')
-    setSelectedImage(null)
-  }
-
-  const handleSubmit = () => {
-    if (diagnosisMethod === 'image' && selectedImage) {
-      console.log('Diagnosing based on image:', selectedImage.name)
-      // Here you would typically upload the image and process it
-    } else if (diagnosisMethod === 'text' && symptoms) {
-      console.log('Diagnosing based on symptoms:', symptoms)
-      // Here you would typically send the symptoms text for processing
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Here you would typically send the symptoms to your backend
+    console.log('Symptoms submitted:', symptoms)
+    // For now, we'll just log the symptoms
   }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
-        <h2 className="text-2xl font-semibold mb-6 text-center cursor-default">Diagnosis</h2>
-        <p className="text-xl mb-8 text-center cursor-default">Please upload an Image or enter text...</p>
-        <div className="w-full max-w-md space-y-4 mb-8">
-          <div className="flex justify-center items-center space-x-4">
-            <Button onClick={() => fileInputRef.current?.click()}>
-              Upload Image
-            </Button>
-            <span className="text-muted-foreground cursor-default">or</span>
-            <Button onClick={handleTextEntry} variant="outline">
-              Enter Text
-            </Button>
-          </div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-            accept="image/*"
-            className="hidden"
-          />
-          {diagnosisMethod === 'image' && selectedImage && (
-            <p className="text-center">{selectedImage.name}</p>
-          )}
-          {diagnosisMethod === 'text' && (
-            <Textarea
-              placeholder="Enter your symptoms here..."
-              value={symptoms}
-              onChange={(e) => setSymptoms(e.target.value)}
-              className="min-h-[100px]"
-            />
-          )}
-          {diagnosisMethod && (
-            <Button className="w-full" onClick={handleSubmit}>
-              Submit for Diagnosis
-            </Button>
-          )}
-        </div>
-        <Link href="/" passHref>
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Symptom Diagnosis</CardTitle>
+            <CardDescription>Describe your symptoms for an AI-assisted diagnosis</CardDescription>
+          </CardHeader>
+          <form onSubmit={handleSubmit}>
+            <CardContent>
+              <div className="flex flex-col space-y-4">
+                <Textarea
+                  placeholder="Describe your symptoms here..."
+                  value={symptoms}
+                  onChange={(e) => setSymptoms(e.target.value)}
+                  rows={6}
+                  className="w-full"
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col items-center">
+              <Button
+                type="submit"
+                className="w-full mb-4"
+                disabled={!symptoms.trim()}
+              >
+                Submit for Diagnosis
+              </Button>
+            </CardFooter>
+          </form>
+        </Card>
+        <Link href="/" className="mt-8">
           <Button variant="outline">Back to Home</Button>
         </Link>
       </main>
