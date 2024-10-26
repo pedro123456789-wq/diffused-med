@@ -25,7 +25,17 @@ This web application utilizes **Nillion Decentralized AI** to provide medical im
 git clone https://github.com/pedro123456789-wq/nillion-med-web-app.git
 cd nillion-med-web-app
 ```
-### 2. Backend Setup (Flask)
+
+### 2. Frontend Setup (Next.js)
+Install dependencies, and start the Next.js development server.
+
+```bash
+npm install
+npm run dev
+```
+
+The Next.js app will be running on `http://localhost:3000`.
+### 3. Backend Setup (Flask)
 Navigate to the `server` directory, create a virtual environment, install dependencies, and start the Flask server.
 
 ```bash
@@ -36,16 +46,6 @@ pip install -r requirements.txt
 python server.py
 ```
 The Flask app will be running on `http://localhost:8080`.
-
-### 3. Frontend Setup (Next.js)
-Install dependencies, and start the Next.js development server.
-
-```bash
-npm install
-npm run dev
-```
-
-The Next.js app will be running on `http://localhost:3000`.
 
 
 
