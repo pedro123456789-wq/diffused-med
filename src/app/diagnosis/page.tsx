@@ -129,7 +129,8 @@ export default function Diagnosis() {
             <CardHeader>
               <CardTitle>Diagnosis Results</CardTitle>
               <CardDescription>
-                AI-assisted diagnosis based on your symptoms
+              Likelihood of diagnosis based on symptoms. 
+              {/* This is not a definitive diagnosis and should be discussed with a healthcare professional. */}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -150,6 +151,11 @@ export default function Diagnosis() {
         <Link href="/" className="mt-8">
           <Button variant="outline">Back to Home</Button>
         </Link>
+        <div className="mt-8 text-center text-sm text-gray-500 max-w-md">
+          <p className="mb-2">
+            <strong>Disclaimer:</strong> This AI-assisted diagnosis tool is for informational purposes only and does not substitute professional medical advice, diagnosis, or treatment.
+          </p>
+        </div>
       </main>
     </div>
   );
