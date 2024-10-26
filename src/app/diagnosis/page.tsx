@@ -4,9 +4,12 @@ import { useState, useRef } from 'react'
 import Header from '@/components/ui/Header'
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import axios from 'axios'
 import Link from 'next/link'
 
 export default function Diagnosis() {
+  const baseUrl = "http://127.0.0.1:8080/api"
+
   const [diagnosisMethod, setDiagnosisMethod] = useState<'image' | 'text' | null>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [symptoms, setSymptoms] = useState('')
@@ -27,10 +30,24 @@ export default function Diagnosis() {
   const handleSubmit = () => {
     if (diagnosisMethod === 'image' && selectedImage) {
       console.log('Diagnosing based on image:', selectedImage.name)
-      // Here you would typically upload the image and process it
     } else if (diagnosisMethod === 'text' && symptoms) {
+      axios.post(`${baseUrl}/dx/send_text`, { symptoms })
+          .then(response => {
+            // Handle success
+            console.log('Response:', response.data);
+          })
+          .catch(error => {
+            // Handle error
+            if (error.response) {
+              console.log('Error Response:', error.response.data);
+              console.log('Error Status:', error.response.status);
+            } else if (error.request) {
+              console.log('Error Request:', error.request);
+            } else {
+              console.log('Error Message:', error.message);
+            }
+          });
       console.log('Diagnosing based on symptoms:', symptoms)
-      // Here you would typically send the symptoms text for processing
     }
   }
 
