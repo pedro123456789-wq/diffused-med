@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from server.translation_model import get_translation
+import aivm_client as aic
+import torch
 
 #app instance
 app = Flask(__name__)
@@ -13,7 +15,39 @@ def hello():
 @app.route('/api/dx/send_text', methods=['POST'])
 def dx_text():
     symptoms = request.json.get('symptoms', '')
-    return jsonify(message=f'symptoms are {symptoms}')
+    
+    labels = [
+        "drug reaction",
+        "allergy",
+        "chicken pox",
+        "diabetes",
+        "psoriasis",
+        "hypertension",
+        "cervical spondylosis",
+        "bronchial asthma",
+        "varicose veins",
+        "malaria",
+        "dengue",
+        "arthritis",
+        "impetigo",
+        "fungal infection",
+        "common cold",
+        "gastroesophageal reflux disease",
+        "urinary tract infection",
+        "typhoid",
+        "pneumonia",
+        "peptic ulcer disease",
+        "jaundice",
+        "migraine"
+    ]
+    
+    tokens = aic.tokenize(symptoms,)
+    encrypted_tokens = aic.BertTinyCryptensor(*tokens)
+    result = aic.get_prediction(encrypted_tokens, CLASSIFIER_MODEL)
+    probs = torch.nn.functional.softmax(result[0])
+    
+    
+    
 
 @app.route('/api/dx/send_picture', methods=['POST'])
 def dx_picture():
