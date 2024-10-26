@@ -10,9 +10,14 @@ CORS(app)   # Lets Next JS app make requests to the server
 def hello():
     return jsonify(message="Hello world!")
 
-@app.route('/api/dx')
-def diagnosis():
-    return
+@app.route('/api/dx/send_text', methods =['POST'])
+def dx_test():
+    return jsonify(message="Text received.")
+
+
+@app.route('/api/dx/send_picture', methods = ['POST'])
+def dx_picture():
+    return jsonify(message="Photo received.")
 
 @app.route('/api/translation', methods = ['POST'])
 def translation():
