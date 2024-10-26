@@ -46,6 +46,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+server/venv/
 
 ### Flask ###
 instance/*
