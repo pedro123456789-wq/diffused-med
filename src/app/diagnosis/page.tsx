@@ -32,6 +32,7 @@ export default function Diagnosis() {
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (symptoms.length === 0){
       toast({
         title: "Invalid input", 
@@ -57,7 +58,7 @@ export default function Diagnosis() {
       setIsLoading(false);
       toast({
         title: "Error", 
-        description: "Servor error getting diagnosis", 
+        description: "Server error getting diagnosis", 
         variant: "destructive"
       });
       return;
@@ -92,7 +93,7 @@ export default function Diagnosis() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center p-6 md:p-24">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md mb-6">
           <CardHeader>
             <CardTitle>Symptom Diagnosis</CardTitle>
             <CardDescription>
@@ -122,6 +123,30 @@ export default function Diagnosis() {
             </CardFooter>
           </form>
         </Card>
+
+        {diagnosis.length > 0 && (
+          <Card className="w-full max-w-md mb-6">
+            <CardHeader>
+              <CardTitle>Diagnosis Results</CardTitle>
+              <CardDescription>
+                AI-assisted diagnosis based on your symptoms
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2">
+                {diagnosis.map((result, index) => (
+                  <li key={index} className="flex justify-between items-center">
+                    <span>{result.label}</span>
+                    <span className="font-semibold">
+                      {(result.probability * 100).toFixed(2)}%
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        )}
+
         <Link href="/" className="mt-8">
           <Button variant="outline">Back to Home</Button>
         </Link>
@@ -129,47 +154,3 @@ export default function Diagnosis() {
     </div>
   );
 }
-
-// if (diagnosisMethod === 'image' && selectedImage) {
-//   console.log('Diagnosing based on image:', selectedImage.name)
-//   const formData = new FormData()
-//   formData.append('image', selectedImage)
-//   axios.post(`${baseUrl}/dx/send_picture`, formData, {
-//     headers: {
-//       'Content-Type': 'multipart/form-data'
-//     }
-//   })
-//     .then(response => {
-//       // Handle success
-//       console.log('Response:', response.data);
-//     })
-//     .catch(error => {
-//       // Handle error
-//       if (error.response) {
-//         console.log('Error Response:', error.response.data);
-//         console.log('Error Status:', error.response.status);
-//       } else if (error.request) {
-//         console.log('Error Request:', error.request);
-//       } else {
-//         console.log('Error Message:', error.message);
-//       }
-//     });
-// }
-
-
-// {
-//   "predictions": [
-//     {
-//       "label": "bronchial asthma",
-//       "probability": 0.15282227098941803
-//     },
-//     {
-//       "label": "common cold",
-//       "probability": 0.12318649888038635
-//     },
-//     {
-//       "label": "allergy",
-//       "probability": 0.08960410207509995
-//     }
-//   ]
-// }
