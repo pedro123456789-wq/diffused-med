@@ -81,12 +81,12 @@ def dx_text():
     label_probs = list(zip(labels, probs.tolist()))
     
     #sort by probability in descending order and get the top 3
-    top_3 = sorted(label_probs, key=lambda x: x[1], reverse=True)[:3]
+    top_4 = sorted(label_probs, key=lambda x: x[1], reverse=True)[:4]
     
     #format the response as a JSON object
     response = {
         "predictions": [
-            {"label": label, "probability": prob} for label, prob in top_3
+            {"label": label, "probability": prob} for label, prob in top_4
         ]
     }
     
