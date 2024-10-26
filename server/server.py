@@ -1,6 +1,8 @@
 import os
 import torch
+from torchvision import transforms
 import aivm_client as aic
+import numpy as np
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -103,30 +105,44 @@ def dx_picture():
     image = request.files.get('image')
 
     if image:
-        message = f"Image '{image.filename}' received and processed successfully."
-        # Delete files in uploads.
-        '''
-        uploaded_images = os.listdir(app.config['UPLOAD-FOLDER'])
-        for img in uploaded_images:
-            os.remove(app.config['UPLOAD-FOLDER'])
-        '''
-
-        # Send a response
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
         image.save(image_path)
-        with Image.open(image_path) as test_image:
-            pass
-        
-        # get dx based on image -> add code here.
-        os.remove(image_path)
-        return jsonify({
-            "message": f"Image '{image}' received successfully.",
-        }), 200
-        
+        with Image.open(image_path) as image:
+            try:
+                labels = [
+                        "Mild demented",
+                        "Moderate demented",
+                        "Non demented",
+                        "Very mild demented"
+                ]
 
+                # pytorch transformation to make image ready for model
+                transform = transforms.Compose([
+                    transforms.ToPILImage(),
+                    transforms.Resize((28, 28)),  # Resize to 28x28
+                    transforms.Grayscale(num_output_channels=1),  # Convert to grayscale
+                    transforms.ToTensor(),  # Convert image to Tensor
+                    transforms.Normalize((0.5,), (1.0,))
+                ])
+                img_tensor = transform(np.array(image))
+
+                # encrypt image tensor
+                encrypted_input = aic.LeNet5Cryptensor(img_tensor.reshape(1, 1, 28, 28))
+                label_cls = torch.argmax(aic.get_prediction(encrypted_input, ALZHEIRMERS_CLASSIFIER_MODEL)[0])
+            except Exception as e:
+                print(e)
+                return jsonify({
+                    "message": "Error getting model prediction"
+                })
+            
+            # return string 
+            return jsonify({
+                "prediction": labels[label_cls]
+            }), 200
     else:
-        # Return an error if no image was uploaded
-        return jsonify({"error": "No image provided"}), 400
+        return jsonify({
+            "message": "Error getting model prediction"
+        }), 400
 
 
 @app.route('/api/translation')
