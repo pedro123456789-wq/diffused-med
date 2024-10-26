@@ -35,6 +35,28 @@ export default function Diagnosis() {
   const handleSubmit = () => {
     if (diagnosisMethod === 'image' && selectedImage) {
       console.log('Diagnosing based on image:', selectedImage.name)
+      const formData = new FormData()
+      formData.append('image', selectedImage)
+      axios.post(`${baseUrl}/dx/send_picture`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then(response => {
+          // Handle success
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          // Handle error
+          if (error.response) {
+            console.log('Error Response:', error.response.data);
+            console.log('Error Status:', error.response.status);
+          } else if (error.request) {
+            console.log('Error Request:', error.request);
+          } else {
+            console.log('Error Message:', error.message);
+          }
+        });
     } else if (diagnosisMethod === 'text' && symptoms) {
       axios.post(`${baseUrl}/dx/send_text`, { symptoms })
           .then(response => {

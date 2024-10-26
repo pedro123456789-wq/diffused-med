@@ -12,12 +12,27 @@ def hello():
 
 @app.route('/api/dx/send_text', methods=['POST'])
 def dx_text():
-    data = request.json
-    return jsonify(message=f'text received: {data}')
+    symptoms = request.json.get('symptoms', '')
+    return jsonify(message=f'symptoms are {symptoms}')
 
 @app.route('/api/dx/send_picture', methods=['POST'])
 def dx_picture():
-    return jsonify(message='picture received')
+    image = request.files.get('image')
+
+    if image:
+        message = f"Image '{image.filename}' received and processed successfully."
+
+        # Send a response
+        return jsonify({
+            "message": f"Image '{image}' received successfully.",
+        }), 200
+
+        return jsonify({"message": message}), 200
+    else:
+        # Return an error if no image was uploaded
+        return jsonify({"error": "No image provided"}), 400
+
+    return jsonify(message=f"Received image: {img}")
 
 @app.route('/api/translation')
 def translation():
