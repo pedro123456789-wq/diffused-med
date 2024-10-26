@@ -16,7 +16,7 @@ This web application utilizes **Nillium Decentralized AI** to provide medical im
 ### Prerequisites
 - **Node.js** and **npm** for Next.js
 - **Python 3.x** and **pip** for Flask
-- **Nillium API Access** for decentralized AI processing
+- **Nillium** access
 
 
 ### 1. Clone the Repository
@@ -41,7 +41,7 @@ The Next.js app will be running on `http://localhost:3000`.
 Navigate to the `server` directory, create a virtual environment, install dependencies, and start the Flask server.
 
 ```bash
-cd ../server
+cd server
 python3 -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 pip install -r requirements.txt
