@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+
+#app instance
 app = Flask(__name__)
 CORS(app)   # Lets Next JS app make requests to the server
 
