@@ -57,6 +57,7 @@ def classify_symptoms(text):
 
 def classify_brain_scan(image):
     # image: PIL image file
+    #returns the class label
 
     labels = [
         "Mild demented",
@@ -77,6 +78,5 @@ def classify_brain_scan(image):
 
     # encrypt image tensor
     encrypted_input = aic.LeNet5Cryptensor(img_tensor.reshape(1, 1, 28, 28))
-    probs = aic.get_prediction(
-        encrypted_input, ALZHEIRMERS_CLASSIFIER_MODEL)[0]
-    return probs
+    label_cls = torch.argmax(aic.get_prediction(encrypted_input, ALZHEIRMERS_CLASSIFIER_MODEL)[0])
+    return labels[label_cls] 
