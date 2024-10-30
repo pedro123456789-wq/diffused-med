@@ -24,7 +24,7 @@ This web application utilizes **Nillion Decentralized AI** to provide medical im
 ```bash
 git clone https://github.com/pedro123456789-wq/nillion-med-web-app.git
 ```
-### 2. Clone the Repository
+### 2. Change Directory
 Change to the correct directory.
 ```bash
 cd diffused-med
@@ -39,7 +39,7 @@ npm run dev
 ```
 
 The Next.js app will be running on `http://localhost:3000`.
-### 3. Backend Setup (AIVM)
+### 4. Backend Setup (AIVM)
 Open a _second shell session_ in terminal and run the following to create a virtual environment, install dependencies, and start the Flask server.
 
 ```bash
@@ -50,7 +50,7 @@ pip install -r requirements.txt
 aivm-devnet
 ```
 
-### 4. Backend Setup (Flask)
+### 5. Backend Setup (Flask)
 Open a _third_ shell, and run the following to start the Flask server.
 ```bash
 cd server
@@ -59,7 +59,7 @@ python server.py
 ```
 The Flask app will be running on `http://localhost:8080`.
 
-### 5. Launch the Web App
+### 6. Launch the Web App
 Open a browser and visit `http://localhost:3000`. You will see the following landing page. <br><br>
 <img src="readme_img/landing_page.png" alt="landing page" width="1000"/>
 
